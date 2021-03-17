@@ -150,6 +150,8 @@ public abstract class TransactionSynchronizationManager {
 	 */
 	@Nullable
 	private static Object doGetResource(Object actualKey) {
+		// ThreadLocal<Map<Object, Object>> resources是这样一个对象
+		// 这样不同请求-不同连接，拿到的就是不同的资源
 		Map<Object, Object> map = resources.get();
 		if (map == null) {
 			return null;

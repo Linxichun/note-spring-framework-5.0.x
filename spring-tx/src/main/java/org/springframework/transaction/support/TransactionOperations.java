@@ -44,6 +44,11 @@ public interface TransactionOperations {
 	 * @throws TransactionException in case of initialization, rollback, or system errors
 	 * @throws RuntimeException if thrown by the TransactionCallback
 	 */
+	/**
+	 * 使用模板模式，2种方案：
+	 * 1.不带返回值，有现成的实现类供使用TransactionCallbackWithoutResult
+	 * 2.带返回值，自己实现接口：TransactionCallback<T>
+	 * */
 	@Nullable
 	<T> T execute(TransactionCallback<T> action) throws TransactionException;
 

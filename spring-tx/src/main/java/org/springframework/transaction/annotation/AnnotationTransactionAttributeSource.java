@@ -106,6 +106,7 @@ public class AnnotationTransactionAttributeSource extends AbstractFallbackTransa
 	 * Create a custom AnnotationTransactionAttributeSource.
 	 * @param annotationParser the TransactionAnnotationParser to use
 	 */
+	// 构造方法需要传入事务注解解析器，帮助解析事务的那些属性
 	public AnnotationTransactionAttributeSource(TransactionAnnotationParser annotationParser) {
 		this.publicMethodsOnly = true;
 		Assert.notNull(annotationParser, "TransactionAnnotationParser must not be null");

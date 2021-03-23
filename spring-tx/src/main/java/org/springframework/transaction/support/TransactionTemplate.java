@@ -122,6 +122,7 @@ public class TransactionTemplate extends DefaultTransactionDefinition
 
 	@Override
 	public void afterPropertiesSet() {
+		// 实际上afterPropertiesSet只是校验了事务管理器不为空，execute()才是核心方法
 		if (this.transactionManager == null) {
 			throw new IllegalArgumentException("Property 'transactionManager' is required");
 		}
@@ -132,26 +133,32 @@ public class TransactionTemplate extends DefaultTransactionDefinition
 	@Nullable
 	public <T> T execute(TransactionCallback<T> action) throws TransactionException {
 		Assert.state(this.transactionManager != null, "No PlatformTransactionManager set");
-
+		// 内部封装好的事务管理器
 		if (this.transactionManager instanceof CallbackPreferringPlatformTransactionManager) {
 			return ((CallbackPreferringPlatformTransactionManager) this.transactionManager).execute(this, action);
-		}
+		}// 需要手动获取事务，执行方法，提交事务的管理器
 		else {
+			// 1.获取事务状态
 			TransactionStatus status = this.transactionManager.getTransaction(this);
 			T result;
 			try {
+				// 2.执行业务逻辑 doInTransaction()执行业务逻辑，这里就是用户自定义的业务代码。如果是没有返回值的，就是doInTransactionWithoutResult()。
 				result = action.doInTransaction(status);
 			}
 			catch (RuntimeException | Error ex) {
+				// 应用运行时异常 或 Error异常 -> 回滚
 				// Transactional code threw application exception -> rollback
 				rollbackOnException(status, ex);
 				throw ex;
 			}
 			catch (Throwable ex) {
+				// 未知异常 -> 回滚
 				// Transactional code threw unexpected exception -> rollback
 				rollbackOnException(status, ex);
 				throw new UndeclaredThrowableException(ex, "TransactionCallback threw undeclared checked exception");
 			}
+			// 3.事务提交
+			// 调用AbstractPlatformTransactionManager的commit，rollbackOnException()异常回滚：调用AbstractPlatformTransactionManager的rollback()，事务提交回滚
 			this.transactionManager.commit(status);
 			return result;
 		}

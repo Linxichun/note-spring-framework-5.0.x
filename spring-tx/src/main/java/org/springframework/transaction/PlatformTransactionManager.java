@@ -42,6 +42,9 @@ import org.springframework.lang.Nullable;
  * @see org.springframework.transaction.support.TransactionTemplate
  * @see org.springframework.transaction.interceptor.TransactionInterceptor
  */
+/**
+ * 这个类是Spring事务的核心包
+ * */
 public interface PlatformTransactionManager {
 
 	/**

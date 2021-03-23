@@ -30,6 +30,9 @@ import org.springframework.transaction.TransactionDefinition;
  * @see DefaultTransactionAttribute
  * @see RuleBasedTransactionAttribute
  */
+/**
+ * 注解属性
+ * */
 public interface TransactionAttribute extends TransactionDefinition {
 
 	/**

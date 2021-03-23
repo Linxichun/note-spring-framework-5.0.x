@@ -97,9 +97,12 @@ public abstract class DataSourceUtils {
 	 * @throws SQLException if thrown by JDBC methods
 	 * @see #doReleaseConnection
 	 */
+	/**
+	 * 真正去获取连接
+	 * */
 	public static Connection doGetConnection(DataSource dataSource) throws SQLException {
 		Assert.notNull(dataSource, "No DataSource specified");
-
+		// 事务同步管理器，开启事务的话，就会先从事务管理器中取连接，同个事务里，再来获取连接，那就是同一个了
 		ConnectionHolder conHolder = (ConnectionHolder) TransactionSynchronizationManager.getResource(dataSource);
 		if (conHolder != null && (conHolder.hasConnection() || conHolder.isSynchronizedWithTransaction())) {
 			conHolder.requested();

@@ -90,6 +90,10 @@ import org.springframework.util.StringUtils;
  * @see BeanNameAutoProxyCreator
  * @see DefaultAdvisorAutoProxyCreator
  */
+/**
+ * SmartInstantiationAwareBeanPostProcessor是Bean的后置处理器，在Bean初始化前后
+ * 实现BeanFactoryAware
+ * */
 @SuppressWarnings("serial")
 public abstract class AbstractAutoProxyCreator extends ProxyProcessorSupport
 		implements SmartInstantiationAwareBeanPostProcessor, BeanFactoryAware {
